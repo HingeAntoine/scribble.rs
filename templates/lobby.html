@@ -197,7 +197,6 @@
     const drawingBoard = document.getElementById("drawing-board");
     const chat = document.getElementById("chat");
     const colorPicker = document.getElementById("color-picker");
-    const centerDialog = document.getElementById("center-dialog");
 
     const colorDialog = document.getElementById("color-dialog")
     const startDialog = document.getElementById("start-dialog");
@@ -231,7 +230,6 @@
     //since not every client has the same screensize.
     let baseWidth = {{.DrawingBoardBaseWidth}};
     let baseHeight = {{.DrawingBoardBaseHeight}};
-    let boardRatio = baseWidth / baseHeight;
 
     function handleCanvasResize() {
         drawingBoard.width = drawingBoard.clientWidth;
