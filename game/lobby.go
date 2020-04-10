@@ -164,6 +164,13 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 		player.Color = dataAsString
 		log.Printf("%v is updating colors. New color: %v\n", player.Name, player.Color)
 		triggerPlayersUpdate(lobby)
+	} else if received.Type == "picked-color" {
+		player.State = Guessing
+		log.Printf("%v is ready to guess.\n", player.Name)
+
+		if player.ID == lobby.Owner.ID {
+			WriteAsJSON(player, JSEvent{Type: "ready-to-start"})
+		}
 	}
 
 	return nil
