@@ -100,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="dialog-button" onclick="chooseColor()">That's my color</button>
+                    <button class="dialog-button" onclick="closeColor()">That's my color</button>
                 </div>
             </div>
         </div>
@@ -279,7 +279,7 @@
         startDialog.style.visibility = "hidden";
     }
 
-    function chooseColor() {
+    function closeColor() {
         colorDialog.style.visibility = "hidden";
     }
 
@@ -290,7 +290,14 @@
             localColor = value;
             colorPicker.value = value;
         }
+
+        socket.send(JSON.stringify({
+            type: "player-update-color",
+            data: localColor
+        }));
+
         updateCursor();
+
     }
 
     function setLineWidth(value) {
