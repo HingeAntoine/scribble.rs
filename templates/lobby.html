@@ -514,9 +514,15 @@
             } else {
                 stateStyleClass = '';
             }
-            let newPlayerElement = '<div class="player ' + stateStyleClass + '">' +
-                '<span class="rank">' + player.rank + '</span>' +
-                '<div class="name-and-buttons">' +
+            let newPlayerElement = '<div class="player ' + stateStyleClass + '">'
+
+            // Player Color
+            newPlayerElement += '<span class="rank" style="background-color: #9999ff;">' +
+                player.rank +
+                '</span>'
+
+            // Name and buttons
+            newPlayerElement += '<div class="name-and-buttons">' +
                 '<span class="playername';
             if (player.id === ownID) {
                 newPlayerElement += ' playername-self';
@@ -526,9 +532,10 @@
                 newPlayerElement +=
                     '<button class="kick-button" id="kick-button" type="button" title="Vote to kick this player" alt="Vote to kick this player" onclick="onClickKickButton(' + player.id + ')">👋</button>';
             }
-            newPlayerElement +=
-                '</div>' +
-                '<div class="score-and-status">' +
+            newPlayerElement += '</div>'
+
+            // Score and status
+            newPlayerElement += '<div class="score-and-status">' +
                 '<div>' +
                 '<span class="playerscore">' + player.score + '</span>' +
                 '<span class="last-turn-score">(Last turn: ' + player.lastScore + ')</span>' +
