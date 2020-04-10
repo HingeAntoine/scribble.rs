@@ -207,6 +207,7 @@ func createPlayer(name string) *Player {
 		Name:         name,
 		ID:           uuid.NewV4().String(),
 		userSession:  uuid.NewV4().String(),
+		Color:		  "#ff7f00",
 		Score:        0,
 		LastScore:    0,
 		Rank:         1,
