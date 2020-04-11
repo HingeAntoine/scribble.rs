@@ -152,6 +152,9 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 			}
 
 			lobby.Round = 1
+			liar := lobby.Players[rand.Intn(len(lobby.Players))]
+			liar.Role = Liar
+			log.Printf("%v was designated as Liar", liar.Name)
 
 			advanceLobby(lobby)
 		}
