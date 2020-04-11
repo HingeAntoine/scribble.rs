@@ -102,6 +102,8 @@
                     </div>
                     <button class="dialog-button" onclick="closeColor()">That's my color</button>
                 </div>
+                <div id="role-dialog" class="center-dialog-content">
+                </div>
             </div>
         </div>
     </div>
@@ -201,6 +203,7 @@
     const colorDialog = document.getElementById("color-dialog")
     const startDialog = document.getElementById("start-dialog");
     const wordDialog = document.getElementById("word-dialog");
+    const roleDialog = document.getElementById("role-dialog");
     const wordButtonZero = document.getElementById("word-button-zero");
     const wordButtonOne = document.getElementById("word-button-one");
     const wordButtonTwo = document.getElementById("word-button-two");
@@ -282,6 +285,10 @@
             type: "picked-color",
         }))
         colorDialog.style.visibility = "hidden";
+    }
+
+    function closeRole() {
+        roleDialog.style.visibility = "hidden";
     }
 
     function setColor(value) {
@@ -464,6 +471,9 @@
             promptWords(parsed.data[0], parsed.data[1], parsed.data[2]);
         } else if (parsed.type === "ready-to-start") {
             startDialog.style.visibility = "visible";
+        } else if (parsed.type === "show-role") {
+            applyRole(parsed.data)
+            roleDialog.style.visibility = "visible";
         }
     };
 
@@ -503,6 +513,18 @@
                             <span class="chat-name">` + author + `</span>
                             <span class="message-content">` + message + `</span>
                         </div>`;
+    }
+
+    function applyRole(role){
+        let roleString = "";
+        if(role == 0) {
+            roleString = "an Artist"
+        } else if (role == 1){
+            roleString = "a Liar"
+        }
+
+        roleDialog.innerHTML = '<span class=\"dialog-title\">You are ' + roleString + '</span>';
+        roleDialog.innerHTML += '<button class="dialog-button" onclick="closeRole()">Understood</button>';
     }
 
     function applyPlayers(players) {

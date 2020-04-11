@@ -478,6 +478,19 @@ func advanceLobby(lobby *Lobby) {
 	}
 	selectNextDrawer(lobby)
 
+	if lobby.Drawer == lobby.Players[0] {
+		for _, player := range lobby.Players {
+			player.Role = Artist
+		}
+		liar := lobby.Players[rand.Intn(len(lobby.Players))]
+		liar.Role = Liar
+		log.Printf("%v was designated as Liar", liar.Name)
+
+		TriggerComplexUpdatePerPlayerEvent("show-role",
+			func(player *Player) interface{} {return player.Role},
+			lobby)
+	}
+
 	lobby.Drawer.State = Drawing
 	lobby.WordChoice = GetRandomWords(lobby)
 
