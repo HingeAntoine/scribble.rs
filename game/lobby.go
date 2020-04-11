@@ -486,7 +486,9 @@ func advanceLobby(lobby *Lobby) {
 		liar.Role = Liar
 		log.Printf("%v was designated as Liar", liar.Name)
 
-		TriggerSimpleUpdateEvent("show-role", lobby)
+		TriggerComplexUpdatePerPlayerEvent("show-role",
+			func(player *Player) interface{} {return player.Role},
+			lobby)
 	}
 
 	lobby.Drawer.State = Drawing

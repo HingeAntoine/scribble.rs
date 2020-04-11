@@ -103,8 +103,6 @@
                     <button class="dialog-button" onclick="closeColor()">That's my color</button>
                 </div>
                 <div id="role-dialog" class="center-dialog-content">
-                    <span class="dialog-title">You are a Liar</span>
-                    <button class="dialog-button" onclick="closeRole()">Understood</button>
                 </div>
             </div>
         </div>
@@ -474,6 +472,7 @@
         } else if (parsed.type === "ready-to-start") {
             startDialog.style.visibility = "visible";
         } else if (parsed.type === "show-role") {
+            applyRole(parsed.data)
             roleDialog.style.visibility = "visible";
         }
     };
@@ -514,6 +513,18 @@
                             <span class="chat-name">` + author + `</span>
                             <span class="message-content">` + message + `</span>
                         </div>`;
+    }
+
+    function applyRole(role){
+        let roleString = "";
+        if(role == 0) {
+            roleString = "an Artist"
+        } else if (role == 1){
+            roleString = "a Liar"
+        }
+
+        roleDialog.innerHTML = '<span class=\"dialog-title\">You are ' + roleString + '</span>';
+        roleDialog.innerHTML += '<button class="dialog-button" onclick="closeRole()">Understood</button>';
     }
 
     function applyPlayers(players) {
