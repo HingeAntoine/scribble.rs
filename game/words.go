@@ -63,43 +63,12 @@ func readWordList(chosenLanguage string) ([]string, error) {
 func GetRandomWords(lobby *Lobby) []string {
 	rand.Seed(time.Now().Unix())
 	wordsNotToPick := lobby.alreadyUsedWords
-	wordOne := getRandomWordWithCustomWordChance(lobby, wordsNotToPick, lobby.CustomWords, lobby.CustomWordsChance)
-	wordsNotToPick = append(wordsNotToPick, wordOne)
-	wordTwo := getRandomWordWithCustomWordChance(lobby, wordsNotToPick, lobby.CustomWords, lobby.CustomWordsChance)
-	wordsNotToPick = append(wordsNotToPick, wordTwo)
-	wordThree := getRandomWordWithCustomWordChance(lobby, wordsNotToPick, lobby.CustomWords, lobby.CustomWordsChance)
+	word, category := getUnusedRandomWord(lobby, wordsNotToPick)
 
-	return []string{
-		wordOne,
-		wordTwo,
-		wordThree,
-	}
+	return []string{ word, category }
 }
 
-func getRandomWordWithCustomWordChance(lobby *Lobby, wordsAlreadyUsed []string, customWords []string, customWordChance int) string {
-	if rand.Intn(100)+1 <= customWordChance {
-		return getUnusedCustomWord(lobby, wordsAlreadyUsed, customWords)
-	}
-
-	return getUnusedRandomWord(lobby, wordsAlreadyUsed)
-}
-
-func getUnusedCustomWord(lobby *Lobby, wordsAlreadyUsed []string, customWords []string) string {
-OUTER_LOOP:
-	for _, word := range customWords {
-		for _, usedWord := range wordsAlreadyUsed {
-			if usedWord == word {
-				continue OUTER_LOOP
-			}
-		}
-
-		return word
-	}
-
-	return getUnusedRandomWord(lobby, wordsAlreadyUsed)
-}
-
-func getUnusedRandomWord(lobby *Lobby, wordsAlreadyUsed []string) string {
+func getUnusedRandomWord(lobby *Lobby, wordsAlreadyUsed []string) (string, string) {
 	//We attempt to find a random word for a hundred times, afterwards we just use any.
 	randomnessAttempts := 0
 	var word string
@@ -119,5 +88,5 @@ OUTER_LOOP:
 		break
 	}
 
-	return word
+	return word, "category"
 }
