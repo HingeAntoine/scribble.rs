@@ -161,6 +161,8 @@ func (lobby *Lobby) GetPlayer(userSession string) *Player {
 
 func (lobby *Lobby) ClearDrawing() {
 	lobby.CurrentDrawing = make([]interface{}, 0, 0)
+
+	TriggerSimpleUpdateEvent("clear-drawing-board", lobby)
 }
 
 // AppendLine adds a line direction to the current drawing. This exists in order

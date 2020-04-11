@@ -457,10 +457,11 @@ func advanceLobby(lobby *Lobby) {
 		otherPlayer.votedForKick = make(map[string]bool)
 	}
 
-	lobby.ClearDrawing()
-
 	//If everyone has drawn once (e.g. a round has passed)
 	if lobby.Drawer == lobby.Players[len(lobby.Players)-1] {
+
+		lobby.ClearDrawing()
+
 		if lobby.Round == lobby.MaxRounds {
 			lobby.Drawer = nil
 			lobby.Round = 0
