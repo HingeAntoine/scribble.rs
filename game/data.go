@@ -106,6 +106,8 @@ type Player struct {
 	Score int `json:"score"`
 	// Color assigned to the player
 	Color string  `json:"color"`
+	// Role assigned to the player
+	Role PlayerRole
 	// Connected defines whether the players websocket connection is currently
 	// established. This has previously been in state but has been moved out
 	// in order to avoid losing the state on refreshing the page.
@@ -146,6 +148,13 @@ const (
 	Drawing  PlayerState = 1
 	Standby  PlayerState = 2
 	PickingColor PlayerState = 3
+)
+
+type PlayerRole int
+
+const (
+	Artist PlayerRole = 0
+	Liar  PlayerRole = 1
 )
 
 // GetPlayer searches for a player, identifying them by usersession.
@@ -211,6 +220,7 @@ func createPlayer(name string) *Player {
 		ID:           uuid.NewV4().String(),
 		userSession:  uuid.NewV4().String(),
 		Color:		  "#ff7f00",
+		Role:         Artist,
 		Score:        0,
 		LastScore:    0,
 		Rank:         1,
