@@ -152,11 +152,6 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 			}
 
 			lobby.Round = 1
-			// TODO: Reassign people to artist role
-			// TODO: Do this each time a new round start
-			liar := lobby.Players[rand.Intn(len(lobby.Players))]
-			liar.Role = Liar
-			log.Printf("%v was designated as Liar", liar.Name)
 
 			advanceLobby(lobby)
 		}
@@ -482,6 +477,15 @@ func advanceLobby(lobby *Lobby) {
 		lobby.Round++
 	}
 	selectNextDrawer(lobby)
+
+	if lobby.Drawer == lobby.Players[0] {
+		for _, player := range lobby.Players {
+			player.Role = Artist
+		}
+		liar := lobby.Players[rand.Intn(len(lobby.Players))]
+		liar.Role = Liar
+		log.Printf("%v was designated as Liar", liar.Name)
+	}
 
 	lobby.Drawer.State = Drawing
 	lobby.WordChoice = GetRandomWords(lobby)
