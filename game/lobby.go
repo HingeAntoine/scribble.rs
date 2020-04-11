@@ -485,6 +485,8 @@ func advanceLobby(lobby *Lobby) {
 		liar := lobby.Players[rand.Intn(len(lobby.Players))]
 		liar.Role = Liar
 		log.Printf("%v was designated as Liar", liar.Name)
+
+		TriggerSimpleUpdateEvent("show-role", lobby)
 	}
 
 	lobby.Drawer.State = Drawing
