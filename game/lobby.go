@@ -152,6 +152,8 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 			}
 
 			lobby.Round = 1
+			// TODO: Reassign people to artist role
+			// TODO: Do this each time a new round start
 			liar := lobby.Players[rand.Intn(len(lobby.Players))]
 			liar.Role = Liar
 			log.Printf("%v was designated as Liar", liar.Name)
