@@ -155,6 +155,22 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 
 			advanceLobby(lobby)
 		}
+	} else if received.Type == "player-update-color" {
+		dataAsString, isString := (received.Data).(string)
+		if !isString {
+			return fmt.Errorf("invalid data received: '%s'", received.Data)
+		}
+
+		player.Color = dataAsString
+		log.Printf("%v is updating colors. New color: %v\n", player.Name, player.Color)
+		triggerPlayersUpdate(lobby)
+	} else if received.Type == "picked-color" {
+		player.State = Guessing
+		log.Printf("%v is ready to guess.\n", player.Name)
+
+		if player.ID == lobby.Owner.ID {
+			WriteAsJSON(player, JSEvent{Type: "ready-to-start"})
+		}
 	}
 
 	return nil

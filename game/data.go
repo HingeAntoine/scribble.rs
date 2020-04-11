@@ -104,6 +104,8 @@ type Player struct {
 	Name string `json:"name"`
 	// Score is the points that the player got in the current Lobby.
 	Score int `json:"score"`
+	// Color assigned to the player
+	Color string  `json:"color"`
 	// Connected defines whether the players websocket connection is currently
 	// established. This has previously been in state but has been moved out
 	// in order to avoid losing the state on refreshing the page.
@@ -143,6 +145,7 @@ const (
 	Guessing PlayerState = 0
 	Drawing  PlayerState = 1
 	Standby  PlayerState = 2
+	PickingColor PlayerState = 3
 )
 
 // GetPlayer searches for a player, identifying them by usersession.
@@ -205,12 +208,13 @@ func createPlayer(name string) *Player {
 		Name:         name,
 		ID:           uuid.NewV4().String(),
 		userSession:  uuid.NewV4().String(),
+		Color:		  "#ff7f00",
 		Score:        0,
 		LastScore:    0,
 		Rank:         1,
 		votedForKick: make(map[string]bool),
 		socketMutex:  &sync.Mutex{},
-		State:        Guessing,
+		State:        PickingColor,
 	}
 }
 
