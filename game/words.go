@@ -2,29 +2,22 @@ package game
 
 import (
 	"io/ioutil"
+	"log"
 	"math/rand"
-	"strings"
 	"time"
 
 	"github.com/markbates/pkger"
+	"gopkg.in/yaml.v2"
 )
 
 var (
-	wordListCache = make(map[string][]string)
 	languageMap   = map[string]string{
-		"english": "words_en",
-		"italian": "words_it",
-		"german":  "words_de",
+		"english": "words_en.yml",
 	}
 )
 
-func readWordList(chosenLanguage string) ([]string, error) {
+func readWordList(chosenLanguage string) ([]string, map[string][]string, error) {
 	langFileName := languageMap[chosenLanguage]
-	list, available := wordListCache[langFileName]
-	if available {
-		return list, nil
-	}
-
 	wordListFile, pkgerError := pkger.Open("/resources/words/" + langFileName)
 	if pkgerError != nil {
 		panic(pkgerError)
@@ -33,91 +26,58 @@ func readWordList(chosenLanguage string) ([]string, error) {
 
 	data, err := ioutil.ReadAll(wordListFile)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	tempWords := strings.Split(string(data), "\n")
-	var words []string
-	for _, word := range tempWords {
-		word = strings.TrimSpace(word)
-		if strings.HasSuffix(word, "#i") {
-			continue
-		}
-
-		lastIndexNumberSign := strings.LastIndex(word, "#")
-		if lastIndexNumberSign == -1 {
-			words = append(words, word)
-		} else {
-			words = append(words, word[:lastIndexNumberSign])
-		}
+	// Parse word list to a dict
+	m := make(map[string][]string)
+	err = yaml.Unmarshal([]byte(data), &m)
+	if err != nil {
+		log.Fatalf("error: %v", err)
 	}
 
-	wordListCache[langFileName] = words
+	// Compute categories
+	categories := make([]string, len(m))
+	i := 0
+	for k := range m {
+		categories[i] = k
+		i++
+	}
 
-	return words, nil
+	return categories, m, nil
 }
 
 // GetRandomWords gets 3 random words for the passed Lobby. The words will be
 // chosen from the custom words and the default dictionary, depending on the
 // settings specified by the Lobby-Owner.
-func GetRandomWords(lobby *Lobby) []string {
+func GetRandomWords(lobby *Lobby) (string, string) {
 	rand.Seed(time.Now().Unix())
-	wordsNotToPick := lobby.alreadyUsedWords
-	wordOne := getRandomWordWithCustomWordChance(lobby, wordsNotToPick, lobby.CustomWords, lobby.CustomWordsChance)
-	wordsNotToPick = append(wordsNotToPick, wordOne)
-	wordTwo := getRandomWordWithCustomWordChance(lobby, wordsNotToPick, lobby.CustomWords, lobby.CustomWordsChance)
-	wordsNotToPick = append(wordsNotToPick, wordTwo)
-	wordThree := getRandomWordWithCustomWordChance(lobby, wordsNotToPick, lobby.CustomWords, lobby.CustomWordsChance)
+	wordsAlreadyUsed := lobby.alreadyUsedWords
 
-	return []string{
-		wordOne,
-		wordTwo,
-		wordThree,
-	}
-}
-
-func getRandomWordWithCustomWordChance(lobby *Lobby, wordsAlreadyUsed []string, customWords []string, customWordChance int) string {
-	if rand.Intn(100)+1 <= customWordChance {
-		return getUnusedCustomWord(lobby, wordsAlreadyUsed, customWords)
-	}
-
-	return getUnusedRandomWord(lobby, wordsAlreadyUsed)
-}
-
-func getUnusedCustomWord(lobby *Lobby, wordsAlreadyUsed []string, customWords []string) string {
-OUTER_LOOP:
-	for _, word := range customWords {
-		for _, usedWord := range wordsAlreadyUsed {
-			if usedWord == word {
-				continue OUTER_LOOP
-			}
-		}
-
-		return word
-	}
-
-	return getUnusedRandomWord(lobby, wordsAlreadyUsed)
-}
-
-func getUnusedRandomWord(lobby *Lobby, wordsAlreadyUsed []string) string {
 	//We attempt to find a random word for a hundred times, afterwards we just use any.
+	//randomnessAttempts := 0
+	//var word string
+	category := lobby.Categories[rand.Int()%len(lobby.Categories)]
+	wordList := lobby.Words[category]
+
 	randomnessAttempts := 0
-	var word string
-OUTER_LOOP:
+	word := ""
+
+	OuterLoop:
 	for {
-		word = lobby.Words[rand.Int()%len(lobby.Words)]
+		word = wordList[rand.Int()%len(wordList)]
 		for _, usedWord := range wordsAlreadyUsed {
 			if usedWord == word {
 				if randomnessAttempts == 100 {
-					break OUTER_LOOP
+					break OuterLoop
 				}
 
 				randomnessAttempts++
-				continue OUTER_LOOP
+				continue OuterLoop
 			}
 		}
 		break
 	}
 
-	return word
+	return word, category
 }

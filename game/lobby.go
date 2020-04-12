@@ -36,8 +36,6 @@ var (
 	}
 	SupportedLanguages = map[string]string{
 		"english": "English",
-		"italian": "Italian",
-		"german":  "German",
 	}
 )
 
@@ -124,9 +122,7 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 		}
 
 		drawer := lobby.Drawer
-		if player == drawer && len(lobby.WordChoice) > 0 && chosenIndex >= 0 && chosenIndex <= 2 {
-			lobby.CurrentWord = lobby.WordChoice[chosenIndex]
-			lobby.WordChoice = nil
+		if player == drawer && chosenIndex >= 0 && chosenIndex <= 2 {
 			lobby.WordHints = createWordHintFor(lobby.CurrentWord, false)
 			lobby.WordHintsShown = createWordHintFor(lobby.CurrentWord, true)
 			triggerWordHintUpdate(lobby)
@@ -434,9 +430,6 @@ func endRound(lobby *Lobby) {
 	}
 
 	lobby.scoreEarnedByGuessers = 0
-	lobby.alreadyUsedWords = append(lobby.alreadyUsedWords, lobby.CurrentWord)
-	lobby.CurrentWord = ""
-	lobby.WordHints = nil
 
 	//If the round ends and people still have guessing, that means the "Last" value
 	////for the next turn has to be "no score earned".
@@ -446,7 +439,9 @@ func endRound(lobby *Lobby) {
 		}
 	}
 
-	WritePublicSystemMessage(lobby, roundOverMessage)
+	if lobby.Drawer == lobby.Players[len(lobby.Players)-1] {
+		WritePublicSystemMessage(lobby, roundOverMessage)
+	}
 
 	advanceLobby(lobby)
 }
@@ -478,7 +473,10 @@ func advanceLobby(lobby *Lobby) {
 	}
 	selectNextDrawer(lobby)
 
+
 	if lobby.Drawer == lobby.Players[0] {
+		lobby.CurrentWord, lobby.CurrentCategory = GetRandomWords(lobby)
+
 		for _, player := range lobby.Players {
 			player.Role = Artist
 		}
@@ -487,12 +485,19 @@ func advanceLobby(lobby *Lobby) {
 		log.Printf("%v was designated as Liar", liar.Name)
 
 		TriggerComplexUpdatePerPlayerEvent("show-role",
-			func(player *Player) interface{} {return player.Role},
-			lobby)
+			func(player *Player) interface{} {
+				wordToGuess := ""
+				if player.Role == Artist{
+					wordToGuess = lobby.CurrentWord
+				}
+				return map[string]interface{}{
+					"role": player.Role,
+					"currWord": wordToGuess,
+					"currCategory": lobby.CurrentCategory}
+			}, lobby)
 	}
 
 	lobby.Drawer.State = Drawing
-	lobby.WordChoice = GetRandomWords(lobby)
 
 	recalculateRanks(lobby)
 
@@ -507,7 +512,7 @@ func advanceLobby(lobby *Lobby) {
 		RoundEndTime: lobby.RoundEndTime,
 	}, lobby)
 
-	WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn", Data: lobby.WordChoice})
+	WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn"})
 }
 
 func selectNextDrawer(lobby *Lobby) {
@@ -647,12 +652,13 @@ func CreateLobby(playerName, language string, drawingTime, rounds, maxPlayers, c
 	lobby.Owner = player
 
 	// Read wordlist according to the chosen language
-	words, err := readWordList(language)
+	categories, words, err := readWordList(language)
 	if err != nil {
 		//TODO Remove lobby, since we errored.
 		return "", nil, err
 	}
 
+	lobby.Categories = categories
 	lobby.Words = words
 
 	return player.userSession, lobby, nil
@@ -708,8 +714,8 @@ func OnConnected(lobby *Lobby, player *Player) {
 	}})
 
 	//This state is reached when the player refreshes before having chosen a word.
-	if lobby.Drawer == player && lobby.CurrentWord == "" {
-		WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn", Data: lobby.WordChoice})
+	if lobby.Drawer == player {
+		WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn"})
 	}
 
 	//TODO Only send to everyone except for the new player, since it's part of the ready event.

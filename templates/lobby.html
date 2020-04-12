@@ -424,16 +424,11 @@
             if (ready.currentDrawing && ready.currentDrawing.length) {
                 applyDrawData(ready.currentDrawing)
             }
-            if (ready.wordHints && ready.wordHints.length) {
-                applyWordHints(ready.wordHints)
-            }
         }
         if (parsed.type === "update-players") {
             applyPlayers(parsed.data);
         } else if (parsed.type === "correct-guess") {
             playWav('/resources/plop.wav');
-        } else if (parsed.type === "update-wordhint") {
-            applyWordHints(parsed.data);
         } else if (parsed.type === "message") {
             applyMessage("", parsed.data.author, parsed.data.content);
         } else if (parsed.type === "system-message") {
@@ -461,19 +456,16 @@
             applyRounds(parsed.data.round, maxRounds);
             applyPlayers(parsed.data.players);
 
-            //We clear this, since there's no word chosen right now.
-            wordContainer.innerHTML = "";
-
             allowDrawing = false;
         } else if (parsed.type === "your-turn") {
             playWav('/resources/your-turn.wav');
-
-            promptWords(parsed.data[0], parsed.data[1], parsed.data[2]);
+            allowDrawing = true;
         } else if (parsed.type === "ready-to-start") {
             startDialog.style.visibility = "visible";
         } else if (parsed.type === "show-role") {
             applyRole(parsed.data)
             roleDialog.style.visibility = "visible";
+            applyWordHints(parsed.data)
         }
     };
 
@@ -517,13 +509,17 @@
 
     function applyRole(role){
         let roleString = "";
-        if(role == 0) {
+        if(role.role == 0) {
             roleString = "an Artist"
-        } else if (role == 1){
+        } else if (role.role == 1){
             roleString = "a Liar"
         }
 
         roleDialog.innerHTML = '<span class=\"dialog-title\">You are ' + roleString + '</span>';
+        roleDialog.innerHTML += '<span><b>Category</b>: ' + role.currCategory + '</span>'
+        if (role.role == 0) {
+            roleDialog.innerHTML += '<span><b>Word</b>: ' + role.currWord + '</span>'
+        }
         roleDialog.innerHTML += '<button class="dialog-button" onclick="closeRole()">Understood</button>';
     }
 
@@ -581,21 +577,14 @@
         roundsSpan.innerText = 'Round ' + round + ' of ' + maxRound;
     }
 
-    function applyWordHints(wordHints) {
+    function applyWordHints(role) {
         wordContainer.innerHTML = "";
-        //If no hint has been revealed
-        wordHints.forEach(function (hint) {
-            if (hint.character === 0) {
-                wordContainer.innerHTML += '<span class="guess-letter guess-letter-underline">&nbsp;</span>';
-            } else {
-                let char = String.fromCharCode(hint.character);
-                if (hint.underline) {
-                    wordContainer.innerHTML += '<span class="guess-letter guess-letter-underline">' + char + '</span>'
-                } else {
-                    wordContainer.innerHTML += '<span class="guess-letter">' + char + '</span>';
-                }
-            }
-        });
+
+        if (role.role == 0) {
+            wordContainer.innerHTML += '<span class="guess-letter guess-letter-underline">Word: ' + role.currWord + '</span>';
+        } else {
+            wordContainer.innerHTML += '<span class="guess-letter guess-letter-underline">Category: ' + role.currCategory + '</span>';
+        }
     }
 
     function applyDrawData(drawElements) {

@@ -25,7 +25,9 @@ type Lobby struct {
 	// CustomWords are additional words that will be used in addition to the
 	// predefined words.
 	CustomWords []string
-	Words       []string
+	Categories  []string
+	Words  		map[string][]string
+
 
 	// Players references all participants of the Lobby.
 	Players []*Player
@@ -37,6 +39,8 @@ type Lobby struct {
 	// CurrentWord represents the word that was last selected. If no word has
 	// been selected yet or the round is already over, this should be empty.
 	CurrentWord string
+	// been selected yet or the round is already over, this should be empty.
+	CurrentCategory string
 	// WordHints for the current word.
 	WordHints []*WordHint
 	// WordHintsShown are the same as WordHints with characters visible.
@@ -44,8 +48,6 @@ type Lobby struct {
 	// Round is the round that the Lobby is currently in. This is a number
 	// between 0 and MaxRounds. 0 indicates that it hasn't started yet.
 	Round int
-	// WordChoice represents the current choice of words.
-	WordChoice []string
 	// RoundEndTime represents the time at which the current round will end.
 	// This is a UTC unix-timestamp in milliseconds.
 	RoundEndTime int64
