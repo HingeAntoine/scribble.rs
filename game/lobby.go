@@ -486,9 +486,13 @@ func advanceLobby(lobby *Lobby) {
 
 		TriggerComplexUpdatePerPlayerEvent("show-role",
 			func(player *Player) interface{} {
+				wordToGuess := ""
+				if player.Role == Artist{
+					wordToGuess = lobby.CurrentWord
+				}
 				return map[string]interface{}{
 					"role": player.Role,
-					"currWord": lobby.CurrentWord,
+					"currWord": wordToGuess,
 					"currCategory": lobby.CurrentCategory}
 			}, lobby)
 	}

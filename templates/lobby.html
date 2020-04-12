@@ -524,7 +524,9 @@
 
         roleDialog.innerHTML = '<span class=\"dialog-title\">You are ' + roleString + '</span>';
         roleDialog.innerHTML += '<span>Category:' + role.currCategory + '</span>'
-        roleDialog.innerHTML += '<span>Word:' + role.currWord + '</span>'
+        if (role.role == 0) {
+            roleDialog.innerHTML += '<span>Word:' + role.currWord + '</span>'
+        }
         roleDialog.innerHTML += '<button class="dialog-button" onclick="closeRole()">Understood</button>';
     }
 
