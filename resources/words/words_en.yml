@@ -92,152 +92,161 @@ weapon:
   - shotgun
   - torpedo
   - cannon
-#{text:'earmuffs',category:'clothing'},
-#{text:'eyepatch',category:'accessory'},
-#{text:'headband',category:'accessory'},
-#{text:'kneepads',category:'accessory'},
-#{text:'necklace',category:'accessory'},
-#{text:'nosering',category:'accessory'},
-#{text:'overalls',category:'clothing'},
-#{text:'pantsuit',category:'clothing'},
-#{text:'partyhat',category:'accessory'},
-#{text:'raincoat',category:'clothing'},
-#{text:'shoelace',category:'accessory'},
-#{text:'slippers',category:'clothing'},
-#{text:'sneakers',category:'clothing'},
-#{text:'swimsuit',category:'clothing'},
-#{text:'umbrella',category:'accessory'},
-#{text:'bandana',category:'accessory'},
-#{text:'earring',category:'accessory'},
-#{text:'hairtie',category:'accessory'},
-#{text:'handbag',category:'accessory'},
-#{text:'mittens',category:'clothing'},
-#{text:'pajamas',category:'clothing'},
-#{text:'sandals',category:'clothing'},
-#{text:'sweater',category:'clothing'},
-#{text:'bikini',category:'clothing'},
-#{text:'crutches',category:'medical'},
-#{text:'dandruff',category:'medical'},
-#{text:'dentures',category:'medical'},
-#{text:'firstaid',category:'medical'},
-#{text:'headache',category:'medical'},
-#{text:'hospital',category:'medical'},
-#{text:'insomnia',category:'medical'},
-#{text:'medicine',category:'medical'},
-#{text:'papercut',category:'medical'},
-#{text:'seasick',category:'medical'},
-#{text:'sunburn',category:'medical'},
-#{text:'vaccine',category:'medical'},
-#{text:'vitamin',category:'medical'},
-#{text:'branches',category:'plant'},
-#{text:'eggplant',category:'plant'},
-#{text:'hongkong',category:'geography'},
-#{text:'palmtree',category:'plant'},
-#{text:'pinecone',category:'plant'},
-#{text:'pinetree',category:'plant'},
-#{text:'primrose',category:'plant'},
-#{text:'scotland',category:'geography'},
-#{text:'america',category:'geography'},
-#{text:'atlanta',category:'geography'},
-#{text:'bahamas',category:'geography'},
-#{text:'england',category:'geography'},
-#{text:'finland',category:'geography'},
-#{text:'florida',category:'geography'},
-#{text:'germany',category:'geography'},
-#{text:'holland',category:'geography'},
-#{text:'ireland',category:'geography'},
-#{text:'jamaica',category:'geography'},
-#{text:'newyork',category:'geography'},
-#{text:'oaktree',category:'plant'},
-#{text:'orlando',category:'geography'},
-#{text:'seaweed',category:'plant'},
-#{text:'bamboo',category:'plant'},
-#{text:'carrot',category:'plant'},
-#{text:'celery',category:'plant'},
-#{text:'cherry',category:'plant'},
-#{text:'garlic',category:'plant'},
-#{text:'grapes',category:'plant'},
-#{text:'backbone',category:'anatomy'},
-#{text:'cemetery',category:'location location location'},
-#{text:'forehead',category:'anatomy'},
-#{text:'mustache',category:'anatomy'},
-#{text:'nosehair',category:'anatomy'},
-#{text:'shoulder',category:'anatomy'},
-#{text:'skeleton',category:'anatomy'},
-#{text:'tentacle',category:'anatomy'},
-#{text:'whiskers',category:'anatomy'},
-#{text:'eyeball',category:'anatomy'},
-#{text:'eyebrow',category:'anatomy'},
-#{text:'eyelash',category:'anatomy'},
-#{text:'kneecap',category:'anatomy'},
-#{text:'knuckle',category:'anatomy'},
-#{text:'library',category:'location location location'},
-#{text:'mansion',category:'location location location'},
-#{text:'petshop',category:'location location location'},
-#{text:'stomach',category:'anatomy'},
-#{text:'theater',category:'location location location'},
-#{text:'unibrow',category:'anatomy'},
-#{text:'africa',category:'location location location'},
-#{text:'brazil',category:'location location location'},
-#{text:'canada',category:'location location location'},
-#{text:'casino',category:'location location location'},
-#{text:'castle',category:'location location location'},
-#{text:'church',category:'location location location'},
-#{text:'circus',category:'location location location'},
-#{text:'dallas',category:'location location location'},
-#{text:'france',category:'location location location'},
-#{text:'hawaii',category:'location location location'},
-#{text:'rowboat',category:'transportation'},
-#{text:'shuttle',category:'transportation'},
-#{text:'airplane',category:'transportation'},
-#{text:'forklift',category:'transportation'},
-#{text:'golfcart',category:'transportation'},
-#{text:'sailboat',category:'transportation'},
-#{text:'towtruck',category:'transportation'},
-#{text:'tricycle',category:'transportation'},
-#{text:'zeppelin',category:'transportation'},
-#{text:'bicycle',category:'transportation'},
-#{text:'dogsled',category:'transportation'},
-#{text:'minivan',category:'transportation'},
-#{text:'porsche',category:'transportation'},
-#{text:'scooter',category:'transportation'},
-#{text:'tractor',category:'transportation'},
-#{text:'tugboat',category:'transportation'},
-#{text:'bagpipes',category:'music'},
-#{text:'guitar',category:'music'},
-#{text:'daftpunk',category:'music'},
-#{text:'macarena',category:'music'},
-#{text:'musicbox',category:'music'},
-#{text:'skrillex',category:'music'},
-#{text:'trombone',category:'music'},
-#{text:'beatles',category:'music'},
-#{text:'beyonce',category:'music'},
-#{text:'blondie',category:'music'},
-#{text:'bonjovi',category:'music'},
-#{text:'drumset',category:'music'},
-#{text:'dubstep',category:'music'},
-#{text:'nirvana',category:'music'},
-#{text:'outkast',category:'music'},
-#{text:'shakira',category:'music'},
-#{text:'ukulele',category:'music'},
-#{text:'griffin',category:'mythology'},
-#{text:'atlantis',category:'mythology'},
-#{text:'hercules',category:'mythology'},
-#{text:'minotaur',category:'mythology'},
-#{text:'poseidon',category:'mythology'},
-#{text:'bigfoot',category:'mythology'},
-#{text:'centaur',category:'mythology'},
-#{text:'cyclops',category:'mythology'},
-#{text:'goddess',category:'mythology'},
-#{text:'jupiter',category:'mythology'},
-#{text:'mermaid',category:'mythology'},
-#{text:'monster',category:'mythology'},
-#{text:'neptune',category:'mythology'},
-#{text:'pegasus',category:'mythology'},
-#{text:'phoenix',category:'mythology'},
-#{text:'unicorn',category:'mythology'},
-#{text:'vampire',category:'mythology'},
-#{text:'dragon',category:'mythology'},
+clothing:
+  - earmuffs
+  - eyepatch
+  - headband
+  - kneepads
+  - necklace
+  - nosering
+  - overalls
+  - pantsuit
+  - partyhat
+  - raincoat
+  - shoelace
+  - slippers
+  - sneakers
+  - swimsuit
+  - umbrella
+  - bandana
+  - earring
+  - hairtie
+  - handbag
+  - mittens
+  - pajamas
+  - sandals
+  - sweater
+  - bikini
+medical:
+  - crutches
+  - dandruff
+  - dentures
+  - firstaid
+  - headache
+  - hospital
+  - insomnia
+  - medicine
+  - papercut
+  - seasick
+  - sunburn
+  - vaccine
+  - vitamin
+plant:
+  - eggplant
+  - branches
+  - palmtree
+  - pinetree
+  - pinecone
+  - primrose
+  - oaktree
+  - seaweed
+  - bamboo
+  - carrot
+  - celery
+  - cherry
+  - garlic
+  - grapes
+geography:
+  - hongkong
+  - scotland
+  - america
+  - atlanta
+  - bahamas
+  - england
+  - finland
+  - florida
+  - germany
+  - holland
+  - ireland
+  - jamaica
+  - newyork
+  - orlando
+anatomy:
+  - backbone
+  - forehead
+  - mustache
+  - nosehair
+  - shoulder
+  - skeleton
+  - tentacle
+  - whiskers
+  - eyeball
+  - eyebrow
+  - eyelash
+  - kneecap
+  - knuckle
+  - stomach
+  - unibrow
+location:
+  - library
+  - cemetery
+  - mansion
+  - petshop
+  - theater
+  - africa
+  - brazil
+  - canada
+  - casino
+  - castle
+  - church
+  - circus
+  - dallas
+  - france
+  - hawaii
+transportation:
+  - rowboat
+  - shuttle
+  - airplane
+  - forklift
+  - golfcart
+  - sailboat
+  - towtruck
+  - tricycle
+  - zeppelin
+  - bicycle
+  - dogsled
+  - minivan
+  - porsche
+  - scooter
+  - tractor
+  - tugboat
+music:
+  - bagpipes
+  - guitar
+  - daftpunk
+  - macarena
+  - musicbox
+  - skrillex
+  - trombone
+  - beatles
+  - beyonce
+  - blondie
+  - bonjovi
+  - drumset
+  - dubstep
+  - nirvana
+  - outkast
+  - shakira
+  - ukulele
+mythology:
+  - atlantis
+  - hercules
+  - minotaur
+  - poseidon
+  - griffin
+  - bigfoot
+  - centaur
+  - cyclops
+  - goddess
+  - jupiter
+  - mermaid
+  - monster
+  - neptune
+  - pegasus
+  - phoenix
+  - unicorn
+  - vampire
+  - dragon
 #{text:'angelina',category:'famous person'},
 #{text:'bob dylan',category:'famous person'},
 #{text:'brad pitt',category:'famous person'},
