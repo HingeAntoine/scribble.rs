@@ -474,6 +474,8 @@ func advanceLobby(lobby *Lobby) {
 	}
 	selectNextDrawer(lobby)
 
+	lobby.CurrentWord, lobby.CurrentCategory = GetRandomWords(lobby)
+
 	if lobby.Drawer == lobby.Players[0] {
 		for _, player := range lobby.Players {
 			player.Role = Artist
@@ -483,12 +485,15 @@ func advanceLobby(lobby *Lobby) {
 		log.Printf("%v was designated as Liar", liar.Name)
 
 		TriggerComplexUpdatePerPlayerEvent("show-role",
-			func(player *Player) interface{} {return player.Role},
-			lobby)
+			func(player *Player) interface{} {
+				return map[string]interface{}{
+					"role": player.Role,
+					"currWord": lobby.CurrentWord,
+					"currCategory": lobby.CurrentCategory}
+			}, lobby)
 	}
 
 	lobby.Drawer.State = Drawing
-	lobby.CurrentWord, lobby.CurrentCategory = GetRandomWords(lobby)
 
 	recalculateRanks(lobby)
 
