@@ -123,8 +123,10 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 
 		drawer := lobby.Drawer
 		if player == drawer && len(lobby.WordChoice) > 0 && chosenIndex >= 0 && chosenIndex <= 2 {
-			lobby.CurrentWord = lobby.WordChoice[chosenIndex]
-			lobby.WordChoice = nil
+			lobby.CurrentWord = lobby.WordChoice
+			lobby.CurrentCategory = lobby.CategoryChoice
+			lobby.WordChoice = ""
+			lobby.CategoryChoice = ""
 			lobby.WordHints = createWordHintFor(lobby.CurrentWord, false)
 			lobby.WordHintsShown = createWordHintFor(lobby.CurrentWord, true)
 			triggerWordHintUpdate(lobby)
@@ -490,7 +492,7 @@ func advanceLobby(lobby *Lobby) {
 	}
 
 	lobby.Drawer.State = Drawing
-	lobby.WordChoice = GetRandomWords(lobby)
+	lobby.WordChoice, lobby.CategoryChoice = GetRandomWords(lobby)
 
 	recalculateRanks(lobby)
 

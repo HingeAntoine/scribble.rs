@@ -50,33 +50,34 @@ func readWordList(chosenLanguage string) ([]string, map[string][]string, error) 
 // GetRandomWords gets 3 random words for the passed Lobby. The words will be
 // chosen from the custom words and the default dictionary, depending on the
 // settings specified by the Lobby-Owner.
-func GetRandomWords(lobby *Lobby) []string {
+func GetRandomWords(lobby *Lobby) (string, string) {
 	rand.Seed(time.Now().Unix())
-	wordsNotToPick := lobby.alreadyUsedWords
-	word, category := getUnusedRandomWord(lobby, wordsNotToPick)
+	wordsAlreadyUsed := lobby.alreadyUsedWords
 
-	return []string{ word, category }
-}
-
-func getUnusedRandomWord(lobby *Lobby, wordsAlreadyUsed []string) (string, string) {
 	//We attempt to find a random word for a hundred times, afterwards we just use any.
 	//randomnessAttempts := 0
 	//var word string
-//OUTER_LOOP:
-//	for {
-//		word = lobby.Words[rand.Int()%len(lobby.Words)]
-//		for _, usedWord := range wordsAlreadyUsed {
-//			if usedWord == word {
-//				if randomnessAttempts == 100 {
-//					break OUTER_LOOP
-//				}
-//
-//				randomnessAttempts++
-//				continue OUTER_LOOP
-//			}
-//		}
-//		break
-//	}
+	category := lobby.Categories[rand.Int()%len(lobby.Categories)]
+	wordList := lobby.Words[category]
 
-	return "word", "category"
+	randomnessAttempts := 0
+	word := ""
+
+	OuterLoop:
+	for {
+		word = wordList[rand.Int()%len(wordList)]
+		for _, usedWord := range wordsAlreadyUsed {
+			if usedWord == word {
+				if randomnessAttempts == 100 {
+					break OuterLoop
+				}
+
+				randomnessAttempts++
+				continue OuterLoop
+			}
+		}
+		break
+	}
+
+	return word, category
 }
