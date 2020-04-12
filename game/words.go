@@ -4,21 +4,15 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
-	//"strings"
 	"time"
-	"fmt"
-	//"log"
 
 	"github.com/markbates/pkger"
 	"gopkg.in/yaml.v2"
-	//"github.com/smallfish/simpleyaml"
 )
 
 var (
 	languageMap   = map[string]string{
 		"english": "words_en.yml",
-		"italian": "words_it",
-		"german":  "words_de",
 	}
 )
 
@@ -41,7 +35,6 @@ func readWordList(chosenLanguage string) ([]string, map[string][]string, error) 
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	fmt.Printf("--- m:\n%v\n\n", m)
 
 	// Compute categories
 	categories := make([]string, len(m))
