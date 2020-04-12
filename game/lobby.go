@@ -122,11 +122,7 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 		}
 
 		drawer := lobby.Drawer
-		if player == drawer && len(lobby.WordChoice) > 0 && chosenIndex >= 0 && chosenIndex <= 2 {
-			lobby.CurrentWord = lobby.WordChoice
-			lobby.CurrentCategory = lobby.CategoryChoice
-			lobby.WordChoice = ""
-			lobby.CategoryChoice = ""
+		if player == drawer && chosenIndex >= 0 && chosenIndex <= 2 {
 			lobby.WordHints = createWordHintFor(lobby.CurrentWord, false)
 			lobby.WordHintsShown = createWordHintFor(lobby.CurrentWord, true)
 			triggerWordHintUpdate(lobby)
@@ -492,7 +488,7 @@ func advanceLobby(lobby *Lobby) {
 	}
 
 	lobby.Drawer.State = Drawing
-	lobby.WordChoice, lobby.CategoryChoice = GetRandomWords(lobby)
+	lobby.CurrentWord, lobby.CurrentCategory = GetRandomWords(lobby)
 
 	recalculateRanks(lobby)
 
@@ -507,7 +503,7 @@ func advanceLobby(lobby *Lobby) {
 		RoundEndTime: lobby.RoundEndTime,
 	}, lobby)
 
-	WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn", Data: lobby.WordChoice})
+	WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn"})
 }
 
 func selectNextDrawer(lobby *Lobby) {
@@ -709,8 +705,8 @@ func OnConnected(lobby *Lobby, player *Player) {
 	}})
 
 	//This state is reached when the player refreshes before having chosen a word.
-	if lobby.Drawer == player && lobby.CurrentWord == "" {
-		WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn", Data: lobby.WordChoice})
+	if lobby.Drawer == player {
+		WriteAsJSON(lobby.Drawer, &JSEvent{Type: "your-turn"})
 	}
 
 	//TODO Only send to everyone except for the new player, since it's part of the ready event.

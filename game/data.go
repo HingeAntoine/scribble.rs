@@ -48,10 +48,6 @@ type Lobby struct {
 	// Round is the round that the Lobby is currently in. This is a number
 	// between 0 and MaxRounds. 0 indicates that it hasn't started yet.
 	Round int
-	// WordChoice represents the current choice of words.
-	WordChoice string
-	// WordChoice represents the current choice of words.
-	CategoryChoice string
 	// RoundEndTime represents the time at which the current round will end.
 	// This is a UTC unix-timestamp in milliseconds.
 	RoundEndTime int64
