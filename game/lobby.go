@@ -430,9 +430,6 @@ func endRound(lobby *Lobby) {
 	}
 
 	lobby.scoreEarnedByGuessers = 0
-	lobby.alreadyUsedWords = append(lobby.alreadyUsedWords, lobby.CurrentWord)
-	lobby.CurrentWord = ""
-	lobby.WordHints = nil
 
 	//If the round ends and people still have guessing, that means the "Last" value
 	////for the next turn has to be "no score earned".
@@ -442,7 +439,9 @@ func endRound(lobby *Lobby) {
 		}
 	}
 
-	WritePublicSystemMessage(lobby, roundOverMessage)
+	if lobby.Drawer == lobby.Players[len(lobby.Players)-1] {
+		WritePublicSystemMessage(lobby, roundOverMessage)
+	}
 
 	advanceLobby(lobby)
 }
@@ -474,9 +473,10 @@ func advanceLobby(lobby *Lobby) {
 	}
 	selectNextDrawer(lobby)
 
-	lobby.CurrentWord, lobby.CurrentCategory = GetRandomWords(lobby)
 
 	if lobby.Drawer == lobby.Players[0] {
+		lobby.CurrentWord, lobby.CurrentCategory = GetRandomWords(lobby)
+
 		for _, player := range lobby.Players {
 			player.Role = Artist
 		}
